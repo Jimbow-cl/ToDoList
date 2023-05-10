@@ -4,13 +4,23 @@ import Task from './Task/Task';
 
 
 function App() {
-  //Variable pour Clear L'input
+  //Constante pour Clear L'input
   const ref = useRef(null)
+
+
   const [taskList, setTaskList] = useState([]);
-  const [status, setstatus] = useState([{ status: "A faire" }, { status: "En Cours" }, { status: "Terminé" }])
   const [newTask, setNewTask] = useState();
 
+  const [status, setstatus] = useState([{ status: "A faire" }, { status: "En Cours" }, { status: "Terminé" }])
 
+  useEffect(() => {
+    console.log("Hop,Début de la liste");
+    return () => {
+    }
+  }, [taskList]);
+
+
+  // Information de l'input
   function New(e) {
     setNewTask(e.target.value);
   };
@@ -21,6 +31,16 @@ function App() {
     taskCopy.splice(id, 1);
     setTaskList(taskCopy);
   };
+
+  function Status(id) {
+    const filtered = [...taskList];
+    filtered.filter(id => {
+      console.log("Bouton Status. WIP")
+      console.log(filtered)
+      return id === filtered;
+    });
+
+  }
   //"Pousser" dans le Tableau taskList, la Variable newTask
   const AddTask = () => {
     setTaskList(taskList => [newTask, ...taskList]);
@@ -31,17 +51,19 @@ function App() {
   }
   //Affichage du Tableau avec la Boucle MAP
   const RenderMyTask = () => {
-    return taskList.map((item, id) => {
+
+    return taskList.map((item, index, id) => {
       return (
         <div >
-          <Task key={id} item={item} />
-          <button id={id}>status</button>
+          <Task key={index} item={item} />
+          <button id={id} onClick={() => Status(id)}>Status</button>
           <button id={id} onClick={() => Deletetask(id)}>Supprimer</button>
         </div>
       );
     }
     );
   }
+
   return (
     <>
       <div>
